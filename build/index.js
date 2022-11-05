@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var dotenv = __importStar(require("dotenv"));
+var fs = require("fs"); // Or `import fs from "fs";` with ESM
 dotenv.config();
 var PORT = process.env.PORT || 8000;
 // create an instance server
@@ -45,11 +46,12 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
     console.log("Server is starting at prot:".concat(PORT));
 });
-var resize = require('./resize');
+var getImage = require('./getImage');
+var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
 app.get('/api/images', function (req, res) {
     var filename = req.query.filename;
     var widthString = req.query.width;
-    var heightString = req.query.hieght;
+    var heightString = req.query.height;
     var width, height;
     if (widthString) {
         width = parseInt(widthString, 10);
@@ -57,7 +59,13 @@ app.get('/api/images', function (req, res) {
     if (heightString) {
         height = parseInt(heightString, 10);
     }
-    resize(filename, width, height);
+    getImage(filename, width, height);
+    if (fs.promises.access("".concat(dir_full, "/").concat(filename, ".jpg"))) {
+        res.sendFile("".concat(dir_full, "/").concat(filename, ".jpg"));
+    }
+    else {
+        res.send('Enter valid file name');
+    }
 });
-// localhost:8000/api/images?filename=santamonica&width=200&height=200
+// ex: localhost:8000/api/images?filename=santamonica&width=200&height=200
 exports.default = app;

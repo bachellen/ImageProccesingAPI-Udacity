@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
+const fs = require("fs"); // Or `import fs from "fs";` with ESM
 
 dotenv.config()
 
@@ -25,11 +26,12 @@ app.listen(PORT, () => {
 
 
 const getImage = require('./getImage')
+const dir_full = '/Users/bachalsahali/projects_nodes/images/full';
 
 app.get('/api/images', (req: Request, res: Response) => {
   var filename = req.query.filename; 
   var widthString = req.query.width; 
-  var heightString = req.query.hieght; 
+  var heightString = req.query.height; 
   let width, height
 if (widthString) {
   width = parseInt(widthString as string,10)
@@ -37,8 +39,14 @@ if (widthString) {
 if (heightString) {
   height = parseInt(heightString as string,10)
 }
+
  
-  getImage(filename,width,height)
+getImage(filename,width,height)
+if(fs.promises.access(`${dir_full}/${filename}.jpg`)){
+res.sendFile(`${dir_full}/${filename}.jpg`)}
+else{
+  res.send('Enter valid file name')
+}
 })
 
 

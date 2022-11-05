@@ -13,7 +13,7 @@ module.exports = async function resize(fullfilename : string, thumbfilename:stri
               })
               .toFile(thumbfilename);
           } catch (error) {
-           return'Fialed to create file'
+           return 'Fialed to create file'
           }
     
 
