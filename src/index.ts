@@ -1,8 +1,9 @@
 import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
-const fs = require("fs"); // Or `import fs from "fs";` with ESM
 
+const fs = require("fs"); 
+let alert =require("alert"); 
 dotenv.config()
 
 
@@ -25,28 +26,32 @@ app.listen(PORT, () => {
 })
 
 
-const getImage = require('./getImage')
+const getImage = require('./getImage');
 const dir_full = '/Users/bachalsahali/projects_nodes/images/full';
 
-app.get('/api/images', (req: Request, res: Response) => {
+app.get('/api/images',  async (req: Request, res: Response) => {
   var filename = req.query.filename; 
   var widthString = req.query.width; 
   var heightString = req.query.height; 
-  let width, height
+  let width: number, height: number;
 if (widthString) {
-  width = parseInt(widthString as string,10)
+  width = parseInt(widthString as string,10);
 }
 if (heightString) {
-  height = parseInt(heightString as string,10)
+  height = parseInt(heightString as string,10);
 }
+fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , (err: any) =>{
+  if(err){
+     
+      alert("Sorry! File name is not avalible")
+      return false;
+  }
+  getImage(filename,width,height);
+  res.sendFile(`${dir_full}/${filename}.jpg`);
+      return true;
+  
+});
 
- 
-getImage(filename,width,height)
-if(fs.promises.access(`${dir_full}/${filename}.jpg`)){
-res.sendFile(`${dir_full}/${filename}.jpg`)}
-else{
-  res.send('Enter valid file name')
-}
 })
 
 

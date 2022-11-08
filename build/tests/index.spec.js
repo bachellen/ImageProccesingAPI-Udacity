@@ -41,6 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
+var getImage = require('../getImage');
+var fs = require("fs");
 // create a request object
 var request = (0, supertest_1.default)(index_1.default);
 describe('Test endpoint response', function () {
@@ -57,3 +59,56 @@ describe('Test endpoint response', function () {
         });
     }); });
 });
+describe('Test image processing with sharp', function () {
+    it('invalid width value', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getImage('foo', -10, 200)];
+                case 1:
+                    error = _a.sent();
+                    expect(error).not.toBeNull();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('filename does not exsits', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getImage('foo', 200, 200)];
+                case 1:
+                    error = _a.sent();
+                    expect(error).not.toBeNull();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('everting is correct file exsit and valid width and hight ', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var dir_thumb, thumbfilename, flag;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    getImage('encenadaport', 90, 80);
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 1000); })];
+                case 1:
+                    _a.sent();
+                    dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
+                    thumbfilename = "".concat(dir_thumb, "/encenadaport-90x80.jpg");
+                    flag = checkFileExistsSync(thumbfilename);
+                    expect(flag).toBeTrue();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+function checkFileExistsSync(filepath) {
+    var flag = true;
+    try {
+        fs.accessSync(filepath, fs.constants.F_OK);
+    }
+    catch (e) {
+        flag = false;
+    }
+    return flag;
+}
