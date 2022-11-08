@@ -54,7 +54,7 @@ module.exports = function resize(fullfilename, thumbfilename, width, height) {
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    return [2 /*return*/, 'Fialed to create file'];
+                    return [2 /*return*/, 'File was not created'];
                 case 3: return [2 /*return*/];
             }
         });

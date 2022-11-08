@@ -35,43 +35,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var fs = require("fs"); // Or `import fs from "fs";` with ESM
+var fs = require("fs");
 var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
 var dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
 var resize = require('./resize');
 module.exports = function getImage(filename, width, height) {
     return __awaiter(this, void 0, void 0, function () {
-        var fullfilename, thumbfilename, error_1;
+        var fullfilename, thumbfilename;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    fullfilename = "".concat(dir_full, "/").concat(filename, ".jpg");
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    if (Number.isNaN(height)) {
-                        if (height < 1) {
-                            return [2 /*return*/, 'please type valid positive height'];
-                        }
-                        return [2 /*return*/, 'please type valid positive height'];
+            fullfilename = "".concat(dir_full, "/").concat(filename, ".jpg");
+            thumbfilename = "".concat(dir_thumb, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg");
+            try {
+                if (Number.isNaN(height)) {
+                    if (height < 1) {
+                        return [2 /*return*/, 'please type positive height'];
                     }
-                    if (Number.isNaN(width)) {
-                        if (width < 1) {
-                            return [2 /*return*/, 'please type valid positive width'];
-                        }
-                        return [2 /*return*/, 'please type valid positive width'];
+                    return [2 /*return*/, 'please type valid height'];
+                }
+                if (Number.isNaN(width)) {
+                    if (width < 1) {
+                        return [2 /*return*/, 'please type positive width'];
                     }
-                    thumbfilename = "".concat(dir_thumb, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg");
-                    return [4 /*yield*/, fs.promises.access(fullfilename)];
-                case 2:
-                    _a.sent();
+                    return [2 /*return*/, 'please type valid width'];
+                }
+                // console.log(checkFileExistsSync(thumbfilename))
+                if (!checkFileExistsSync(thumbfilename)) {
                     resize(fullfilename, thumbfilename, width, height);
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    return [2 /*return*/, false];
-                case 4: return [2 /*return*/];
+                }
             }
+            catch (error) {
+                return [2 /*return*/, false];
+            }
+            return [2 /*return*/];
         });
     });
 };
+function checkFileExistsSync(filepath) {
+    var flag = true;
+    try {
+        fs.accessSync(filepath, fs.constants.F_OK);
+    }
+    catch (e) {
+        flag = false;
+    }
+    return flag;
+}
