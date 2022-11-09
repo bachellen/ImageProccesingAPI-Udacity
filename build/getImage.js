@@ -36,8 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var fs = require("fs");
-var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
-var dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
+var path = require('path');
+var workingDir = path.resolve("./");
+var dir_full = path.join(workingDir, '/images/full');
+// const dir_full = '/Users/bachalsahali/projects_nodes/images/full';
+// const dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
+var dir_thumb = path.join(workingDir, '/images/thumb');
 var resize = require('./resize');
 module.exports = function getImage(filename, width, height) {
     return __awaiter(this, void 0, void 0, function () {

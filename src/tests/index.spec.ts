@@ -4,6 +4,7 @@ import app from '../index'
 
 const getImage = require('../getImage')
 const fs = require("fs"); 
+const path = require('path');
 
 // create a request object
 const request = supertest(app)
@@ -38,11 +39,12 @@ describe('Test image processing with sharp', (): void => {
     getImage(
       'encenadaport',
        90,
-       80
+       90
      )
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
-    const thumbfilename  = `${dir_thumb}/encenadaport-90x80.jpg`
+    const workingDir = path.resolve("./");
+    const dir_thumb = path.join(workingDir,'/images/thumb');
+    const thumbfilename  = `${dir_thumb}/encenadaport-90x90.jpg`
     let flag = checkFileExistsSync(thumbfilename);
 
     expect(flag).toBeTrue();

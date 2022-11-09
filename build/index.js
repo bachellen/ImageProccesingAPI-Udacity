@@ -68,6 +68,7 @@ var dotenv = __importStar(require("dotenv"));
 var fs = require("fs");
 var alert = require("alert");
 dotenv.config();
+var path = require('path');
 var PORT = process.env.PORT || 8000;
 // create an instance server
 var app = (0, express_1.default)();
@@ -84,7 +85,8 @@ app.listen(PORT, function () {
     console.log("Server is starting at prot:".concat(PORT));
 });
 var getImage = require('./getImage');
-var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
+var workingDir = path.resolve("./");
+var dir_full = path.join(workingDir, '/images/full');
 app.get('/api/images', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var filename, widthString, heightString, width, height;
     return __generator(this, function (_a) {
