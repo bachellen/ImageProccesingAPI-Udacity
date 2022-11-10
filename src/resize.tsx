@@ -12,6 +12,7 @@ module.exports = async function resize(fullfilename : string, thumbfilename:stri
                 height: height
               })
               .toFile(thumbfilename);
+              return thumbfilename;
           } catch (error) {
            return 'File was not created'
           }

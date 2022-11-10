@@ -29,7 +29,7 @@ app.listen(PORT, () => {
 const getImage = require('./getImage');
 const workingDir = path.resolve("./");
 const dir_full = path.join(workingDir,'/images/full');
-
+const thumb_dir = path.join(workingDir,'/images/thumb');
 app.get('/api/images',  async (req: Request, res: Response) => {
   var filename = req.query.filename; 
   var widthString = req.query.width; 
@@ -41,14 +41,21 @@ if (widthString) {
 if (heightString) {
   height = parseInt(heightString as string,10);
 }
-fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , (err: any) =>{
+fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , async (err: any) =>{
   if(err){
      
       alert("Sorry! File name is not avalible")
       return false;
   }
-  getImage(filename,width,height);
-  res.sendFile(`${dir_full}/${filename}.jpg`);
+  const response = await getImage(filename,width,height);
+ 
+  if (response == `${thumb_dir}/${filename}-${width}x${height}.jpg`) {
+    res.sendFile(response);
+  }else {
+    res.send(response)
+  }
+  // getImage(filename,width,height);
+  // res.sendFile(`${dir_full}/${filename}.jpg`);
       return true;
   
 });
