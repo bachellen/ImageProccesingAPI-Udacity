@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv'
 const fs = require("fs"); 
 let alert =require("alert"); 
 dotenv.config()
-
+const path = require('path');
 
 const PORT = process.env.PORT || 8000
 // create an instance server
@@ -27,8 +27,9 @@ app.listen(PORT, () => {
 
 
 const getImage = require('./getImage');
-const dir_full = '/Users/bachalsahali/projects_nodes/images/full';
-
+const workingDir = path.resolve("./");
+const dir_full = path.join(workingDir,'/images/full');
+const thumb_dir = path.join(workingDir,'/images/thumb');
 app.get('/api/images',  async (req: Request, res: Response) => {
   var filename = req.query.filename; 
   var widthString = req.query.width; 
@@ -40,14 +41,21 @@ if (widthString) {
 if (heightString) {
   height = parseInt(heightString as string,10);
 }
-fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , (err: any) =>{
+fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , async (err: any) =>{
   if(err){
      
       alert("Sorry! File name is not avalible")
       return false;
   }
-  getImage(filename,width,height);
-  res.sendFile(`${dir_full}/${filename}.jpg`);
+  const response = await getImage(filename,width,height);
+ 
+  if (response == `${thumb_dir}/${filename}-${width}x${height}.jpg`) {
+    res.sendFile(response);
+  }else {
+    res.send(response)
+  }
+  // getImage(filename,width,height);
+  // res.sendFile(`${dir_full}/${filename}.jpg`);
       return true;
   
 });
@@ -59,4 +67,4 @@ fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , (err: any) =>{
 
 
 
-export default app
+export default app;

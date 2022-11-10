@@ -1,7 +1,10 @@
 const fs =require("fs"); 
+const path = require('path');
+import express, { Request, Response } from 'express'
 
-const dir_full = '/Users/bachalsahali/projects_nodes/images/full';
-const dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
+const workingDir = path.resolve("./");
+const dir_full = path.join(workingDir,'/images/full');
+const dir_thumb = path.join(workingDir,'/images/thumb');
 const resize = require('./resize');
 module.exports = async function getImage(filename : string, width:number,height:number) {
     const fullfilename = `${dir_full}/${filename}.jpg`;
@@ -20,11 +23,21 @@ module.exports = async function getImage(filename : string, width:number,height:
             }
             return 'please type valid width';
           }
+        if (checkFileExistsSync(fullfilename)){
+
+        
         // console.log(checkFileExistsSync(thumbfilename))
         if(!checkFileExistsSync(thumbfilename)){
-        resize(fullfilename,thumbfilename,width,height);}
+        const response = resize(fullfilename,thumbfilename,width,height);
+        return response;}
+        else {
+          return 'File already exsit';
+        }}
+        else {
+          return 'Please provide an exsit file name.'
+        }
     } catch (error) {
-        return false;
+        return 'Error happend';
     }
   }
 

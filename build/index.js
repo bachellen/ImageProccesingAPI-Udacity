@@ -68,6 +68,7 @@ var dotenv = __importStar(require("dotenv"));
 var fs = require("fs");
 var alert = require("alert");
 dotenv.config();
+var path = require('path');
 var PORT = process.env.PORT || 8000;
 // create an instance server
 var app = (0, express_1.default)();
@@ -84,7 +85,9 @@ app.listen(PORT, function () {
     console.log("Server is starting at prot:".concat(PORT));
 });
 var getImage = require('./getImage');
-var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
+var workingDir = path.resolve("./");
+var dir_full = path.join(workingDir, '/images/full');
+var thumb_dir = path.join(workingDir, '/images/thumb');
 app.get('/api/images', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var filename, widthString, heightString, width, height;
     return __generator(this, function (_a) {
@@ -97,15 +100,32 @@ app.get('/api/images', function (req, res) { return __awaiter(void 0, void 0, vo
         if (heightString) {
             height = parseInt(heightString, 10);
         }
-        fs.access("".concat(dir_full, "/").concat(filename, ".jpg"), fs.constants.R_OK, function (err) {
-            if (err) {
-                alert("Sorry! File name is not avalible");
-                return false;
-            }
-            getImage(filename, width, height);
-            res.sendFile("".concat(dir_full, "/").concat(filename, ".jpg"));
-            return true;
-        });
+        fs.access("".concat(dir_full, "/").concat(filename, ".jpg"), fs.constants.R_OK, function (err) { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (err) {
+                            alert("Sorry! File name is not avalible");
+                            return [2 /*return*/, false];
+                        }
+                        return [4 /*yield*/, getImage(filename, width, height)];
+                    case 1:
+                        response = _a.sent();
+                        console.log(response);
+                        console.log(response == "".concat(thumb_dir, "/").concat(filename, ".jpg"));
+                        if (response == "".concat(thumb_dir, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg")) {
+                            res.sendFile(response);
+                        }
+                        else {
+                            res.send(response);
+                        }
+                        // getImage(filename,width,height);
+                        // res.sendFile(`${dir_full}/${filename}.jpg`);
+                        return [2 /*return*/, true];
+                }
+            });
+        }); });
         return [2 /*return*/];
     });
 }); });

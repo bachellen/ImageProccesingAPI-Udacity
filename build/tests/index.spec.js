@@ -43,6 +43,7 @@ var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
 var getImage = require('../getImage');
 var fs = require("fs");
+var path = require('path');
 // create a request object
 var request = (0, supertest_1.default)(index_1.default);
 describe('Test endpoint response', function () {
@@ -85,16 +86,17 @@ describe('Test image processing with sharp', function () {
         });
     }); });
     it('everting is correct file exsit and valid width and hight ', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var dir_thumb, thumbfilename, flag;
+        var workingDir, dir_thumb, thumbfilename, flag;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    getImage('encenadaport', 90, 80);
+                    getImage('encenadaport', 90, 90);
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 1000); })];
                 case 1:
                     _a.sent();
-                    dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
-                    thumbfilename = "".concat(dir_thumb, "/encenadaport-90x80.jpg");
+                    workingDir = path.resolve("./");
+                    dir_thumb = path.join(workingDir, '/images/thumb');
+                    thumbfilename = "".concat(dir_thumb, "/encenadaport-90x90.jpg");
                     flag = checkFileExistsSync(thumbfilename);
                     expect(flag).toBeTrue();
                     return [2 /*return*/];

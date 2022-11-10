@@ -35,13 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
-var dir_full = '/Users/bachalsahali/projects_nodes/images/full';
-var dir_thumb = '/Users/bachalsahali/projects_nodes/images/thumb';
+var path = require('path');
+var workingDir = path.resolve("./");
+var dir_full = path.join(workingDir, '/images/full');
+var dir_thumb = path.join(workingDir, '/images/thumb');
 var resize = require('./resize');
 module.exports = function getImage(filename, width, height) {
     return __awaiter(this, void 0, void 0, function () {
-        var fullfilename, thumbfilename;
+        var fullfilename, thumbfilename, response;
         return __generator(this, function (_a) {
             fullfilename = "".concat(dir_full, "/").concat(filename, ".jpg");
             thumbfilename = "".concat(dir_thumb, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg");
@@ -58,13 +61,22 @@ module.exports = function getImage(filename, width, height) {
                     }
                     return [2 /*return*/, 'please type valid width'];
                 }
-                // console.log(checkFileExistsSync(thumbfilename))
-                if (!checkFileExistsSync(thumbfilename)) {
-                    resize(fullfilename, thumbfilename, width, height);
+                if (checkFileExistsSync(fullfilename)) {
+                    // console.log(checkFileExistsSync(thumbfilename))
+                    if (!checkFileExistsSync(thumbfilename)) {
+                        response = resize(fullfilename, thumbfilename, width, height);
+                        return [2 /*return*/, response];
+                    }
+                    else {
+                        return [2 /*return*/, 'File already exsit'];
+                    }
+                }
+                else {
+                    return [2 /*return*/, 'Please provide an exsit file name.'];
                 }
             }
             catch (error) {
-                return [2 /*return*/, false];
+                return [2 /*return*/, 'Error happend'];
             }
             return [2 /*return*/];
         });
