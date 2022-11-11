@@ -3,6 +3,7 @@
       "target": "es5",
       "module": "commonjs",
       "lib": ["ES6", "DOM"],
+      "jsx": "preserve", 
       "outDir": "./build",
       "rootDir": "./src",
       "strict": true,

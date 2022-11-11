@@ -35,63 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var path = require('path');
-var workingDir = path.resolve("./");
-var dir_full = path.join(workingDir, '/images/full');
-var dir_thumb = path.join(workingDir, '/images/thumb');
-var resize = require('./resize');
-function getImage(filename, width, height) {
+var sharp = require("sharp");
+module.exports = function resize(fullfilename, thumbfilename, width, height) {
     return __awaiter(this, void 0, void 0, function () {
-        var fullfilename, thumbfilename, response;
+        var error_1;
         return __generator(this, function (_a) {
-            fullfilename = "".concat(dir_full, "/").concat(filename, ".jpg");
-            thumbfilename = "".concat(dir_thumb, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg");
-            try {
-                if (Number.isNaN(height)) {
-                    if (height < 1) {
-                        return [2 /*return*/, 'please type positive height'];
-                    }
-                    return [2 /*return*/, 'please type valid height'];
-                }
-                if (Number.isNaN(width)) {
-                    if (width < 1) {
-                        return [2 /*return*/, 'please type positive width'];
-                    }
-                    return [2 /*return*/, 'please type valid width'];
-                }
-                if (checkFileExistsSync(fullfilename)) {
-                    // console.log(checkFileExistsSync(thumbfilename))
-                    if (!checkFileExistsSync(thumbfilename)) {
-                        response = resize(fullfilename, thumbfilename, width, height);
-                        return [2 /*return*/, response];
-                    }
-                    else {
-                        return [2 /*return*/, 'File already exsit'];
-                    }
-                }
-                else {
-                    return [2 /*return*/, 'Please provide an exsit file name.'];
-                }
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, sharp(fullfilename)
+                            .resize({
+                            width: width,
+                            height: height
+                        })
+                            .toFile(thumbfilename)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, thumbfilename];
+                case 2:
+                    error_1 = _a.sent();
+                    return [2 /*return*/, 'File was not created'];
+                case 3: return [2 /*return*/];
             }
-            catch (error) {
-                return [2 /*return*/, 'Error happend'];
-            }
-            return [2 /*return*/];
         });
     });
-}
-exports.default = getImage;
-// export default theImage;
-function checkFileExistsSync(filepath) {
-    var flag = true;
-    try {
-        fs.accessSync(filepath, fs.constants.F_OK);
-    }
-    catch (e) {
-        flag = false;
-    }
-    return flag;
-}
-// export {* as getImage};
+};

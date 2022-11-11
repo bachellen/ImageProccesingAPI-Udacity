@@ -41,7 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
-var getImage = require('../getImage');
+var getImage_1 = __importDefault(require("../getImage"));
+// const getImage = require('../getImage')
 var fs = require("fs");
 var path = require('path');
 // create a request object
@@ -65,7 +66,7 @@ describe('Test image processing with sharp', function () {
         var error;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getImage('foo', -10, 200)];
+                case 0: return [4 /*yield*/, (0, getImage_1.default)('foo', -10, 200)];
                 case 1:
                     error = _a.sent();
                     expect(error).not.toBeNull();
@@ -77,7 +78,7 @@ describe('Test image processing with sharp', function () {
         var error;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getImage('foo', 200, 200)];
+                case 0: return [4 /*yield*/, (0, getImage_1.default)('foo', 200, 200)];
                 case 1:
                     error = _a.sent();
                     expect(error).not.toBeNull();
@@ -90,7 +91,7 @@ describe('Test image processing with sharp', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    getImage('encenadaport', 90, 90);
+                    (0, getImage_1.default)('encenadaport', 90, 90);
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 1000); })];
                 case 1:
                     _a.sent();

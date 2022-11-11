@@ -1,8 +1,8 @@
 import supertest from 'supertest'
 import app from '../index'
+import getImage from '../getImage'
 
-
-const getImage = require('../getImage')
+// const getImage = require('../getImage')
 const fs = require("fs"); 
 const path = require('path');
 

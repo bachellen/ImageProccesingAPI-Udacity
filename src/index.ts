@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
+import getImage from './getImage'
 
 const fs = require("fs"); 
 let alert =require("alert"); 
@@ -26,7 +27,7 @@ app.listen(PORT, () => {
 })
 
 
-const getImage = require('./getImage');
+// const getImage = require('./getImage');
 const workingDir = path.resolve("./");
 const dir_full = path.join(workingDir,'/images/full');
 const thumb_dir = path.join(workingDir,'/images/thumb');
@@ -47,7 +48,7 @@ fs.access(`${dir_full}/${filename}.jpg`,  fs.constants.R_OK , async (err: any) =
       alert("Sorry! File name is not avalible")
       return false;
   }
-  const response = await getImage(filename,width,height);
+  const response = await getImage(String(filename),width,height);
  
   if (response == `${thumb_dir}/${filename}-${width}x${height}.jpg`) {
     res.sendFile(response);

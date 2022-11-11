@@ -65,6 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var dotenv = __importStar(require("dotenv"));
+var getImage_1 = __importDefault(require("./getImage"));
 var fs = require("fs");
 var alert = require("alert");
 dotenv.config();
@@ -84,7 +85,7 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
     console.log("Server is starting at prot:".concat(PORT));
 });
-var getImage = require('./getImage');
+// const getImage = require('./getImage');
 var workingDir = path.resolve("./");
 var dir_full = path.join(workingDir, '/images/full');
 var thumb_dir = path.join(workingDir, '/images/thumb');
@@ -109,11 +110,9 @@ app.get('/api/images', function (req, res) { return __awaiter(void 0, void 0, vo
                             alert("Sorry! File name is not avalible");
                             return [2 /*return*/, false];
                         }
-                        return [4 /*yield*/, getImage(filename, width, height)];
+                        return [4 /*yield*/, (0, getImage_1.default)(String(filename), width, height)];
                     case 1:
                         response = _a.sent();
-                        console.log(response);
-                        console.log(response == "".concat(thumb_dir, "/").concat(filename, ".jpg"));
                         if (response == "".concat(thumb_dir, "/").concat(filename, "-").concat(width, "x").concat(height, ".jpg")) {
                             res.sendFile(response);
                         }
