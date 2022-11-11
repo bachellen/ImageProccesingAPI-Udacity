@@ -6,7 +6,7 @@ const workingDir = path.resolve("./");
 const dir_full = path.join(workingDir,'/images/full');
 const dir_thumb = path.join(workingDir,'/images/thumb');
 const resize = require('./resize');
-module.exports = async function getImage(filename : string, width:number,height:number) {
+export default async function getImage(filename : string, width:number,height:number) {
     const fullfilename = `${dir_full}/${filename}.jpg`;
     const thumbfilename = `${dir_thumb}/${filename}-${width}x${height}.jpg`;
     try {
@@ -41,7 +41,7 @@ module.exports = async function getImage(filename : string, width:number,height:
     }
   }
 
-  
+  // export default theImage;
   function checkFileExistsSync( filepath: string){
     let flag = true;
     try{
@@ -52,3 +52,4 @@ module.exports = async function getImage(filename : string, width:number,height:
     return flag;
   }
   
+// export {* as getImage};
